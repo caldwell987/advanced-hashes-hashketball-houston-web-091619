@@ -248,3 +248,61 @@ def most_points_scored
 end
 
 
+def winning_team
+  away_total = 0
+  home_total = 0
+    game_hash[:away][:players].each do |name, stats|
+      away_total += stats[:points]
+    end
+    game_hash[:home][:players].each do |name, stats|
+      home_total += stats[:points]
+    end
+    if away_total > home_total
+       game_hash[:away][:team_name]
+    elsif away_total < home_total
+       game_hash[:home][:team_name]
+    else
+      "It's a tie!"
+    end
+end
+
+
+
+
+def player_with_longest_name
+  longest_name_length = 0
+  player_with_longest_name = "player"
+  game_hash.each do |location, team|
+    team.each do |attribute, data|
+      if attribute == :players
+        data.each do |player, stats|
+          if player.length > longest_name_length
+            longest_name_length = player.length
+            player_with_longest_name = player
+          end
+        end
+      end
+    end
+  end
+  player_with_longest_name
+end
+
+def long_name_steals_a_ton?
+  best_steals = 0
+  player_with_best_steals = "player"
+  game_hash.each do |location, team|
+    team.each do |attribute, data|
+      if attribute == :players
+        data.each do |player, stats|
+          if stats[:steals] > best_steals
+            best_steals = stats[:steals]
+            player_with_best_steals = player
+          end
+        end
+      end
+    end
+  end
+  if player_with_best_steals == player_with_longest_name
+    return true
+  end
+end
